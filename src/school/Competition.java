@@ -14,7 +14,13 @@ public class Competition {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Zavodnik prvni = new Zavodnik("Dominik", "Šefr");
+        prvni.setStartTime(1, 15, 30);
+        prvni.setEndTime(2, 30, 60);
+        System.out.println(prvni.runTime());
+        System.out.println(prvni);
+        Zavodnik druhy = new Zavodnik("Radek", "Mocek");
+        System.out.println(druhy);
     }
     
 }

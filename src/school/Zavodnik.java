@@ -29,9 +29,10 @@ public class Zavodnik {
         registracniCislo = pocitadloRegistCisl;
         pocitadloRegistCisl++;   
     }
-    public long runTime(){
-        this.time = endTime - startTime;
-        return this.time;
+    public String runTime(){
+        long secondsTemp = endTime - startTime;
+        
+        return TimeTools.secondsToTime(secondsTemp);
     }
     /**
      * True = muž
@@ -53,8 +54,25 @@ public class Zavodnik {
     public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
+    public void setStartTime(int hours, int minutes, int seconds){
+        
+        this.startTime = TimeTools.timeToSeconds(hours, minutes, seconds);
+    }
+    
+    public void setStartTime(String time){ //09:12:00
+        //TODO
+    }
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
+     public void setEndTime(int hours, int minutes, int seconds){
+        this.endTime = TimeTools.timeToSeconds(hours, minutes, seconds);
+    }
+
+    @Override
+    public String toString() {
+        return "Zavodnik{" + "name=" + name + ", surName=" + surName + ", registracniCislo=" + registracniCislo + '}';
+    }
+    
 }
