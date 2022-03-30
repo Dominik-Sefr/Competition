@@ -9,7 +9,7 @@ package school;
  * @author jana.vitvarova
  */
 public class Competition {
-
+    
     /**
      * @param args the command line arguments
      */
