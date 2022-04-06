@@ -1,28 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package school;
 
-/**
- *
- * @author 
- */
 public final class TimeTools {
     
     private TimeTools(){
         
     }
-    public static String secondsToTime(long secondsInput){
-        int seconds = (int) (secondsInput % 60);
-        int minutes =  (int) Math.floor(secondsInput /60);
-        int hours = (int) Math.floor(minutes/60);
-        minutes = minutes % 60;
-        return hours + ":" + minutes + ":" + seconds;
+    
+    public static String secondsToStringTime(int secondsInput){
+        int hours = secondsInput / 3600;
+        int minutes = secondsInput / 60 % 60;
+        int seconds = secondsInput % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
-    public static long timeToSeconds(int hours, int minutes, int seconds){
+    
+    public static int timeToSeconds(int hours, int minutes, int seconds){
         return hours*3600 + minutes*60 + seconds;
         
+    }
+    
+    public static int stringTimeToSeconds(String time) {
+        String[] arr = time.split(":");
+        int hours = Integer.parseInt(arr[0]);
+        int minutes = Integer.parseInt(arr[1]);
+        int seconds = Integer.parseInt(arr[2]);
+        return timeToSeconds(hours, minutes, seconds);
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(secondsToStringTime(7323));
+        System.out.println(timeToSeconds(2, 2, 3));
+        System.out.println(stringTimeToSeconds("02:02:03"));
     }
 }
