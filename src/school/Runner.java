@@ -1,11 +1,14 @@
 package school;
 
+import java.time.LocalDate;
+
 public final class Runner implements Comparable<Runner>{
 
     private final String name;
     private final String surName;
     private int birthYear;
-    private char gender;
+    private LocalDate dob;
+    private Gender gender;
     private String club;
     private int wave;
     private boolean paid;
@@ -39,10 +42,18 @@ public final class Runner implements Comparable<Runner>{
      * @param gender
      */
     public void setGender(char gender) {
-        this.gender = gender;
+        if(gender == 'f' || gender == 'F' || gender == 'w'){
+            this.gender = Gender.F;
+        }else {
+            this.gender = Gender.M;
+        }
+        
     }
 
     public void setClub(String club) {
+        if(!club.matches("^[A-Z]{2,5}$")){
+            throw new IllegalArgumentException("Nevalidni nazev klubu");
+        }
         this.club = club;
     }
 
@@ -63,14 +74,23 @@ public final class Runner implements Comparable<Runner>{
     }
 
     public void setEndTime(int endTime) {
+        if(startTime == 0){
+            throw new StartTimeNotSet("Nebyl jeste zadany cas startu");
+        }
         this.endTime = endTime;
     }
 
     public void setEndTime(int hours, int minutes, int seconds) {
+        if(startTime == 0){
+            throw new StartTimeNotSet("Nebyl jeste zadany cas startu");
+        }
         this.endTime = TimeTools.timeToSeconds(hours, minutes, seconds);
     }
     
     public void setEndTime(String time) { //09:12:00
+        if(startTime == 0){
+            throw new StartTimeNotSet("Nebyl jeste zadany cas startu");
+        }
         this.endTime = TimeTools.stringTimeToSeconds(time);
     }
 // Alternative defensive copy, in addition clone() can be overriden    
@@ -107,7 +127,7 @@ public final class Runner implements Comparable<Runner>{
     }
 
     public char getGender() {
-        return gender;
+        return gender.toString().charAt(0);
     }
 
     public String getClub() {
@@ -157,10 +177,17 @@ public final class Runner implements Comparable<Runner>{
 
     public static void main(String[] args) {
         Runner prvni = new Runner("Dominik", "Šefr");
-        prvni.setStartTime(1, 15, 30);
-        prvni.setEndTime(2, 30, 60);
-        System.out.println(prvni);
+        //prvni.setStartTime(1, 15, 30);
+        try{
+            prvni.setEndTime(2, 30, 60);
+            System.out.println(prvni);
+        }catch (StartTimeNotSet e){
+            System.out.println(e.getMessage());
+        }catch(Exception e){
+            System.out.println("Chyba");
+        }
         Runner druhy = new Runner("Radek", "Mocek");
         System.out.println(druhy);
+        prvni.setClub("AAABA");
     }
 }

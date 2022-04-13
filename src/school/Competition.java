@@ -1,7 +1,10 @@
 package school;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
 public class Competition {
@@ -9,6 +12,16 @@ public class Competition {
     private ArrayList<Runner> runners;
     private String name;
 
+    public static final Collator col = Collator.getInstance(new Locale("cs", "CZ"));
+    //public static final Comparator<Runner> COMP_BY_NAME = (Runner r1, Runner r2) -> r1.getSurName().compareTo(r2.getSurName());
+    public static final Comparator<Runner> COMP_BY_NAME = (Runner r1, Runner r2) -> {
+        int value = col.compare(r1.getSurName(),r2.getSurName());   
+        if (value == 0){
+            value = col.compare(r1.getName(), r2.getName());
+        }
+        return value;
+    };
+    
     public Competition(String name) {
         this.name = name;
         runners = new ArrayList<>();
@@ -84,6 +97,30 @@ public class Competition {
     
     private void sortBySurName(){
         Collections.sort(runners);
+    }
+    
+    private void sortByRunTime(){
+        Comparator cbrt = new ComparatorRunnerByRunTime();
+        Collections.sort(runners, cbrt);
+    }
+    
+    private void sortByNumberold(){
+        Collections.sort(runners, new Comparator<Runner>(){
+            @Override
+            public int compare(Runner o1, Runner o2) {
+                //return o1.getRunTime() - ((Runner)o2).getRunTime();
+                return o1.getRunTime() - o2.getRunTime();
+            }
+            
+        });
+    }
+    
+    private void sortByNumber(){
+        Collections.sort(runners, (Runner o1, Runner o2) -> o1.getRunTime() - o2.getRunTime());
+    }
+    
+    private void sortBySurname(){
+        Collections.sort(runners, COMP_BY_NAME);
     }
     
     public ArrayList<Runner> getRunnersSortedbySurName(){
