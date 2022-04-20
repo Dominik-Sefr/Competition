@@ -12,7 +12,7 @@ public final class Runner implements Comparable<Runner>{
     private String club;
     private int wave;
     private boolean paid;
-    private int startTime;
+    private Time startTime;
     private int endTime;
     private int runTime;
     private static int registrationNumbersCount = 1;
@@ -62,33 +62,36 @@ public final class Runner implements Comparable<Runner>{
     }
 
     public void setStartTime(int startTime) {
-        this.startTime = startTime;
+        //this.startTime = startTime;
+        this.startTime = new Time(startTime);
     }
 
     public void setStartTime(int hours, int minutes, int seconds) {
-        this.startTime = TimeTools.timeToSeconds(hours, minutes, seconds);
+        //this.startTime = TimeTools.timeToSeconds(hours, minutes, seconds);
+        this.startTime = new Time(hours, minutes, seconds);
     }
 
     public void setStartTime(String time) { //09:12:00
-        this.startTime = TimeTools.stringTimeToSeconds(time);
+        //this.startTime = TimeTools.stringTimeToSeconds(time);
+        this.startTime = new Time(time);
     }
 
     public void setEndTime(int endTime) {
-        if(startTime == 0){
+        if(startTime == null){
             throw new StartTimeNotSet("Nebyl jeste zadany cas startu");
         }
         this.endTime = endTime;
     }
 
     public void setEndTime(int hours, int minutes, int seconds) {
-        if(startTime == 0){
+        if(startTime == null){
             throw new StartTimeNotSet("Nebyl jeste zadany cas startu");
         }
         this.endTime = TimeTools.timeToSeconds(hours, minutes, seconds);
     }
     
     public void setEndTime(String time) { //09:12:00
-        if(startTime == 0){
+        if(startTime == null){
             throw new StartTimeNotSet("Nebyl jeste zadany cas startu");
         }
         this.endTime = TimeTools.stringTimeToSeconds(time);
@@ -143,7 +146,7 @@ public final class Runner implements Comparable<Runner>{
     }
 
     public int getStartTime() {
-        return startTime;
+        return startTime.timeToSeconds();
     }
 
     public int getEndTime() {
@@ -151,11 +154,11 @@ public final class Runner implements Comparable<Runner>{
     }
 
     private int runTime() {
-        return endTime - startTime;
+        return endTime - startTime.timeToSeconds();
     }
     
     public int getRunTime() {
-        if(runTime == 0 && startTime != 0 && endTime != 0){
+        if(runTime == 0 && startTime != null && endTime != 0){
             this.runTime = runTime();
         }
         return runTime;
